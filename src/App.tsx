@@ -1,9 +1,6 @@
+import CardsContainer from "./components/CardsContainer";
 function App() {
-  return (
-    <h1 className="text-3xl font-bold text-red-600 text-center">
-      Project init ...
-    </h1>
-  );
+  return <CardsContainer />;
 }
 
 export default App;
