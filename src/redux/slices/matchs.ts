@@ -3,14 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 export interface MatchsState {
   word: string;
   translation: string;
-  match: boolean | undefined;
+  match: boolean;
   score: number;
 }
 
 const initialState: MatchsState = {
   word: "",
   translation: "",
-  match: undefined,
+  match: false,
   score: 0,
 };
 
@@ -26,10 +26,12 @@ export const matchsSlice = createSlice({
       state.translation = action.payload;
       return state;
     },
-    match: (state) => {
+    match: (state, action) => {
+      state.match = action.payload;
       return state;
     },
-    score: (state) => {
+    score: (state, action) => {
+      state.score = action.payload;
       return state;
     },
   },
