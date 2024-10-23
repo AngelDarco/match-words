@@ -1,0 +1,82 @@
+[
+  {
+    "_id": "1",
+    "word": "hello",
+    "translations": {
+      "de": "hallo",
+      "es": "hola"
+    }
+  },
+  {
+    "_id": "2",
+    "word": "goodbye",
+    "translations": {
+      "de": "auf Wiedersehen",
+      "es": "adiós"
+    }
+  },
+  {
+    "_id": "3",
+    "word": "please",
+    "translations": {
+      "de": "bitte",
+      "es": "por favor"
+    }
+  },
+  {
+    "_id": "4",
+    "word": "thank you",
+    "translations": {
+      "de": "danke",
+      "es": "gracias"
+    }
+  },
+  {
+    "_id": "5",
+    "word": "yes",
+    "translations": {
+      "de": "ja",
+      "es": "sí"
+    }
+  },
+  {
+    "_id": "6",
+    "word": "no",
+    "translations": {
+      "de": "nein",
+      "es": "no"
+    }
+  },
+  {
+    "_id": "7",
+    "word": "friend",
+    "translations": {
+      "de": "Freund",
+      "es": "amigo"
+    }
+  },
+  {
+    "_id": "8",
+    "word": "family",
+    "translations": {
+      "de": "Familie",
+      "es": "familia"
+    }
+  },
+  {
+    "_id": "9",
+    "word": "water",
+    "translations": {
+      "de": "Wasser",
+      "es": "agua"
+    }
+  },
+  {
+    "_id": "10",
+    "word": "food",
+    "translations": {
+      "de": "Essen",
+      "es": "comida"
+    }
+  }
+]
