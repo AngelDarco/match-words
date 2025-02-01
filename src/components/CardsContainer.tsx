@@ -56,7 +56,7 @@ export default function CardsContainer() {
   return (
     <div className="max-w-lg border h-[500px] flex items-center justify-center">
       <section
-        className="w-full h-full flex flex-col items-center justify-center gap-2 hover:[&>div]:bg-slate-800 "
+        className="w-full h-full flex flex-col items-center justify-center gap-2 "
         id="lang"
         onClick={HandlerMatchs}
       >
@@ -64,12 +64,13 @@ export default function CardsContainer() {
           <Card
             key={i}
             card={w}
+            state={state.word}
             match={w === state.word ? state.match : undefined}
           />
         ))}
       </section>
       <section
-        className="w-full h-full flex flex-col items-center justify-center gap-2 hover:[&>div]:bg-slate-800"
+        className="w-full h-full flex flex-col items-center justify-center gap-2 "
         onClick={HandlerMatchs}
         id="targ"
       >
@@ -77,6 +78,7 @@ export default function CardsContainer() {
           <Card
             key={i}
             card={w}
+            state={state.translation}
             match={w === state.translation ? state.match : undefined}
           />
         ))}
