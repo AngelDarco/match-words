@@ -17,8 +17,8 @@ export default class getData {
 
   /**
    *
-   * @param lang the current user language abreviation
-   * @returns the data of the current language e.g. "de" | "en"
+   * @param lang the current user language abreviation e.g. "de" | "en"
+   * @returns an object with the data of the current language
    */
   getCurrentLanguage(lang: Lang) {
     const path = `${this.url}/${lang}.json`;
@@ -27,8 +27,8 @@ export default class getData {
 
   /**
    *
-   * @param lang the target user language abreviation
-   * @returns the data of the target language e.g. "de" | "en"
+   * @param lang the target user language abreviation e.g. "de" | "en"
+   * @returns an object with the data of the target language
    */
   getTargetLanguage(lang: Lang) {
     const path = `${this.url}/${lang}.json`;
