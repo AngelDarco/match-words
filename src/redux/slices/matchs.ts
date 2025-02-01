@@ -1,41 +1,45 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+type Word = { word: string; id: string };
+
 export interface MatchsState {
-  word: string;
-  translation: string;
+  current: Word;
+  target: Word;
   match: boolean;
   score: number;
 }
 
 const initialState: MatchsState = {
-  word: "",
-  translation: "",
+  current: { word: "", id: "" },
+  target: { word: "", id: "" },
   match: false,
   score: 0,
 };
 
 export const matchsSlice = createSlice({
-  name: "match",
+  name: "matchWords",
   initialState,
   reducers: {
-    word: (state, action) => {
-      state.word = action.payload;
+    current: (state, action) => {
+      state.current = action.payload;
       return state;
     },
-    translation: (state, action) => {
-      state.translation = action.payload;
+    target: (state, action) => {
+      state.target = action.payload;
       return state;
     },
     match: (state, action) => {
       state.match = action.payload;
+
+      console.log(state.match, action.payload);
       return state;
     },
-    score: (state, action) => {
-      state.score = action.payload;
+    score: (state) => {
+      state.score++;
       return state;
     },
   },
 });
 
-export const { word, translation, match, score } = matchsSlice.actions;
+export const { current, target, match, score } = matchsSlice.actions;
 export default matchsSlice.reducer;
