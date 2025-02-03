@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { current, target, match, score } from "../redux/slices/matchs";
@@ -31,8 +32,6 @@ export default function CardsContainer() {
     const resetMatch = new Debounce();
     if (state.match !== undefined)
       resetMatch.execute(() => dispatch(match(undefined)));
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.match]);
 
   // check if the words match with his traduced word
@@ -52,8 +51,6 @@ export default function CardsContainer() {
       resetTarget.execute(() => dispatch(target({ word: "", id: "" })));
       resetCurrent.execute(() => dispatch(current({ word: "", id: "" })));
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.current.word, state.target.word]);
 
   const HandlerMatchs = (event: React.MouseEvent<HTMLElement>) => {
