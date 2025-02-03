@@ -30,8 +30,6 @@ export const matchsSlice = createSlice({
     },
     match: (state, action) => {
       state.match = action.payload;
-
-      console.log(state.match, action.payload);
       return state;
     },
     score: (state) => {
