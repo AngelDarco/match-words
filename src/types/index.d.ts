@@ -1,12 +1,14 @@
 export type Lang = "en" | "de";
 
+export type Word = Array<{
+  union_id: string;
+  word: string;
+}>;
+
 // data retrieved from the database
 export interface Data {
   lang: Lang;
-  words: Array<{
-    union_id: string;
-    word: string;
-  }>;
+  words: Word;
 }
 
 // card props
