@@ -7,6 +7,7 @@ import Card from "./Card";
 import getData from "../lib/getData";
 import { Data, Word } from "../types";
 import Debounce from "../lib/Debounce";
+import LinkedList from "../lib/linkedList/LinkedList";
 
 export default function CardsContainer() {
   const [data, setData] = useState<Word[]>([]);
@@ -34,6 +35,17 @@ export default function CardsContainer() {
         return [curr, targ];
       });
     })();
+
+    // Example usage
+    const list = new LinkedList<number>();
+    list.add(10);
+    list.add(20);
+    list.add(30);
+    console.log(list);
+
+    list.remove(20);
+    console.log(list);
+    console.log(list.print());
   }, []);
 
   useEffect(() => {
