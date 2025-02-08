@@ -1,24 +1,22 @@
-interface Card extends React.PropsWithChildren {
-  card: string;
-  match: boolean | undefined;
-  state: string;
-}
-export default function Card({ card, match, state }: Card) {
+import { memo } from "react";
+import type { Card } from "../types";
+
+export default memo(function Card({ word, id, isSelected, match }: Card) {
+  const handlerBackground = () => {
+    if (isSelected && match === false) {
+      return "bg-red-500";
+    } else if (isSelected) {
+      return "bg-green-500";
+    }
+  };
+
   return (
     <div
       className={`max-w-36 min-w-36 border rounded-lg p-2 flex align-center justify-center
-      ${
-        match
-          ? "bg-green-500"
-          : match === false
-          ? "bg-red-500"
-          : state === card
-          ? "bg-green-500"
-          : ""
-      }
-      `}
+      ${handlerBackground()}`}
+      id={id}
     >
-      {card}
+      {word}
     </div>
   );
-}
+});

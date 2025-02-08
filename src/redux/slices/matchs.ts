@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-type Word = { word: string; id: string };
+import { Word } from "../../types";
 
 export interface MatchsState {
   current: Word;
@@ -10,8 +9,8 @@ export interface MatchsState {
 }
 
 const initialState: MatchsState = {
-  current: { word: "", id: "" },
-  target: { word: "", id: "" },
+  current: { word: "", id: 0 },
+  target: { word: "", id: 0 },
   match: false,
   score: 0,
 };
@@ -30,8 +29,6 @@ export const matchsSlice = createSlice({
     },
     match: (state, action) => {
       state.match = action.payload;
-
-      console.log(state.match, action.payload);
       return state;
     },
     score: (state) => {

@@ -2,27 +2,27 @@
   "lang": "en",
   "words": [
     {
-      "union_id": "1",
+      "union_id": 1,
       "word": "hello"
     },
     {
-      "union_id": "2",
+      "union_id": 2,
       "word": "goodbye"
     },
     {
-      "union_id": "3",
+      "union_id": 3,
       "word": "please"
     },
     {
-      "union_id": "4",
+      "union_id": 4,
       "word": "thank you"
     },
     {
-      "union_id": "5",
+      "union_id": 5,
       "word": "welcome"
     },
     {
-      "union_id": "6",
+      "union_id": 6,
       "word": "excuse me"
     }
   ]
