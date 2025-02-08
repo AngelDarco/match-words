@@ -6,6 +6,7 @@ export interface MatchsState {
   target: Word;
   match: boolean;
   score: number;
+  data: Word[][];
 }
 
 const initialState: MatchsState = {
@@ -13,6 +14,7 @@ const initialState: MatchsState = {
   target: { word: "", id: 0 },
   match: false,
   score: 0,
+  data: [],
 };
 
 export const matchsSlice = createSlice({
@@ -31,12 +33,36 @@ export const matchsSlice = createSlice({
       state.match = action.payload;
       return state;
     },
+
     score: (state) => {
       state.score++;
+      return state;
+    },
+
+    data: (state, action) => {
+      state.data = action.payload;
+      return state;
+    },
+
+    updateData: (state, action) => {
+      const currId = action.payload.current.id;
+      const targId = action.payload.target.id;
+
+      if (state.data.length === 0) return state;
+
+      const currData = action.payload.data[0].filter(
+        (word: { id: number }) => word.id !== currId
+      );
+      const targData = action.payload.data[1].filter(
+        (word: { id: number }) => word.id !== targId
+      );
+
+      state.data = [currData, targData];
       return state;
     },
   },
 });
 
-export const { current, target, match, score } = matchsSlice.actions;
+export const { current, target, match, score, data, updateData } =
+  matchsSlice.actions;
 export default matchsSlice.reducer;

@@ -1,15 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { current, target, match, score } from "../redux/slices/matchs";
-import { useEffect, useRef, useState } from "react";
+import {
+  current,
+  target,
+  match,
+  score,
+  data,
+  updateData,
+} from "../redux/slices/matchs";
+import { useEffect, useRef } from "react";
 import Card from "./Card";
 import getData from "../lib/getData";
-import { Data, Word } from "../types";
+import { Data } from "../types";
 import Debounce from "../lib/Debounce";
 
 export default function CardsContainer() {
-  const [data, setData] = useState<Word[][]>([]);
   const dispatch = useDispatch();
   const state = useSelector((state: RootState) => state.matchWords);
 
@@ -17,48 +23,52 @@ export default function CardsContainer() {
 
   // get the data from the database
   useEffect(() => {
-    if (data.length === 0)
+    if (state.data.length === 0)
       (async () => {
         const URL = "database";
-        const data = new getData(URL);
+        const db = new getData(URL);
 
-        await data.getCurrentLanguage("en").then((curr) => {
+        await db.getCurrentLanguage("en").then((curr) => {
           if (dataRef.current) {
             dataRef.current.push(curr);
           }
         });
-        await data.getTargetLanguage("de").then((targ) => {
+        await db.getTargetLanguage("de").then((targ) => {
           if (dataRef.current) {
             dataRef.current.push(targ);
           }
         });
 
-        setData(() => {
-          const curr = dataRef.current[0].words;
-          const targ = dataRef.current[1].words;
-          return [curr, targ];
-        });
+        const curr = dataRef.current[0].words;
+        const targ = dataRef.current[1].words;
+
+        dispatch(data([curr, targ]));
       })();
   }, [state.current.word, state.target.word]);
 
+  // reset match state after 1 second every time a match is found
   useEffect(() => {
-    // reset match state after 1 second every time a match is found
     const resetMatch = new Debounce();
     if (state.match !== undefined)
       resetMatch.execute(() => dispatch(match(undefined)));
   }, [state.match]);
 
+  // check if the words match with his traduced word
   useEffect(() => {
-    // check if the words match with his traduced word
     if (state.current.word && state.target.word) {
       const isMatch = state.current.id === state.target.id;
 
       // Set the match state
       dispatch(match(isMatch));
 
-      // Increment the score
+      // Increment the score and update the data
       if (isMatch) {
         dispatch(score());
+        dispatch(
+          updateData({
+            ...state,
+          })
+        );
       }
 
       // reset values
@@ -87,7 +97,7 @@ export default function CardsContainer() {
         current(
           innerText === state.current.word
             ? { word: "", id: 0 }
-            : { word: innerText, id }
+            : { word: innerText, id: +id }
         )
       );
 
@@ -97,13 +107,13 @@ export default function CardsContainer() {
         target(
           innerText === state.target.word
             ? { word: "", id: 0 }
-            : { word: innerText, id }
+            : { word: innerText, id: +id }
         )
       );
   };
 
-  const currentWords = data[0] || [];
-  const targetWords = data[1] || [];
+  const currentWords = state.data[0] || [];
+  const targetWords = state.data[1] || [];
 
   return (
     <div className="max-w-lg border h-[500px] flex items-center justify-center">
