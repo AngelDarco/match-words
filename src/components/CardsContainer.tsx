@@ -15,8 +15,8 @@ export default function CardsContainer() {
 
   const dataRef = useRef<Data[]>([]);
 
+  // get the data from the database
   useEffect(() => {
-    // get the data from the database
     if (data.length === 0)
       (async () => {
         const URL = "database";
