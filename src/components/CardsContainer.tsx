@@ -7,10 +7,9 @@ import Card from "./Card";
 import getData from "../lib/getData";
 import { Data, Word } from "../types";
 import Debounce from "../lib/Debounce";
-import LinkedList from "../lib/linkedList/LinkedList";
 
 export default function CardsContainer() {
-  const [data, setData] = useState<Word[]>([]);
+  const [data, setData] = useState<Word[][]>([]);
   const dispatch = useDispatch();
   const state = useSelector((state: RootState) => state.matchWords);
 
@@ -18,35 +17,29 @@ export default function CardsContainer() {
 
   useEffect(() => {
     // get the data from the database
-    (async () => {
-      const URL = "database";
-      const data = new getData(URL);
+    if (data.length === 0)
+      (async () => {
+        const URL = "database";
+        const data = new getData(URL);
 
-      const curr = await data.getCurrentLanguage("en");
-      const targ = await data.getTargetLanguage("de");
+        await data.getCurrentLanguage("en").then((curr) => {
+          if (dataRef.current) {
+            dataRef.current.push(curr);
+          }
+        });
+        await data.getTargetLanguage("de").then((targ) => {
+          if (dataRef.current) {
+            dataRef.current.push(targ);
+          }
+        });
 
-      if (!curr || (!targ && !dataRef.current)) return;
-      dataRef.current = [curr, targ];
-
-      setData(() => {
-        const curr = dataRef.current[0].words;
-        const targ = dataRef.current[1].words;
-
-        return [curr, targ];
-      });
-    })();
-
-    // Example usage
-    const list = new LinkedList<number>();
-    list.add(10);
-    list.add(20);
-    list.add(30);
-    console.log(list);
-
-    list.remove(20);
-    console.log(list);
-    console.log(list.print());
-  }, []);
+        setData(() => {
+          const curr = dataRef.current[0].words;
+          const targ = dataRef.current[1].words;
+          return [curr, targ];
+        });
+      })();
+  }, [state.current.word, state.target.word]);
 
   useEffect(() => {
     // reset match state after 1 second every time a match is found
@@ -71,8 +64,8 @@ export default function CardsContainer() {
       // reset values
       const resetTarget = new Debounce();
       const resetCurrent = new Debounce();
-      resetTarget.execute(() => dispatch(target({ word: "", id: "" })));
-      resetCurrent.execute(() => dispatch(current({ word: "", id: "" })));
+      resetTarget.execute(() => dispatch(target({ word: "", id: 0 })));
+      resetCurrent.execute(() => dispatch(current({ word: "", id: 0 })));
     }
   }, [state.current.word, state.target.word]);
 
@@ -122,7 +115,7 @@ export default function CardsContainer() {
         {currentWords.map(({ union_id, word }) => (
           <Card
             key={union_id}
-            id={union_id}
+            id={union_id + ""}
             word={word}
             isSelected={state.current.word === word}
             match={state.current.word === word && state.match}
@@ -138,7 +131,7 @@ export default function CardsContainer() {
         {targetWords.map(({ union_id, word }) => (
           <Card
             key={union_id}
-            id={union_id}
+            id={union_id + ""}
             word={word}
             isSelected={state.target.word === word}
             match={state.target.word === word && state.match}
