@@ -7,17 +7,17 @@ export type Lang = "en" | "de";
 
 /**
  * Word interface
- * @param union_id the union id of the word
- * @param word the word value
+ * @param id a number that represent the id of the word
+ * @param word a string that represent the word value
  */
 export type Word = {
-  union_id: number;
+  id: number;
   word: string;
 };
 
 /**
  * Data interface
- * @param lang the current user language abreviation
+ * @param lang type {@link Lang} that represent the current user language abreviation
  * @param words an array of type Word {@link Word}
  */
 export interface Data {

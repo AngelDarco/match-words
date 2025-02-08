@@ -86,7 +86,7 @@ export default function CardsContainer() {
       dispatch(
         current(
           innerText === state.current.word
-            ? { word: "", id: "" }
+            ? { word: "", id: 0 }
             : { word: innerText, id }
         )
       );
@@ -96,7 +96,7 @@ export default function CardsContainer() {
       dispatch(
         target(
           innerText === state.target.word
-            ? { word: "", id: "" }
+            ? { word: "", id: 0 }
             : { word: innerText, id }
         )
       );
@@ -112,10 +112,10 @@ export default function CardsContainer() {
         id={dataRef.current[0]?.lang}
         onClick={HandlerMatchs}
       >
-        {currentWords.map(({ union_id, word }) => (
+        {currentWords.map(({ id, word }) => (
           <Card
-            key={union_id}
-            id={union_id + ""}
+            key={id}
+            id={id + ""}
             word={word}
             isSelected={state.current.word === word}
             match={state.current.word === word && state.match}
@@ -128,10 +128,10 @@ export default function CardsContainer() {
         onClick={HandlerMatchs}
         id={dataRef.current[1]?.lang}
       >
-        {targetWords.map(({ union_id, word }) => (
+        {targetWords.map(({ id, word }) => (
           <Card
-            key={union_id}
-            id={union_id + ""}
+            key={id}
+            id={id + ""}
             word={word}
             isSelected={state.target.word === word}
             match={state.target.word === word && state.match}

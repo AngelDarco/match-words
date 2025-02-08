@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-type Word = { word: string; id: number };
+import { Word } from "../../types";
 
 export interface MatchsState {
   current: Word;
