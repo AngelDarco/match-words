@@ -1,4 +1,4 @@
-import { Lang } from "../types";
+import { Data, Lang } from "../types";
 /**
  * This class is used to get the data from the database
  *@param url - the main url of the database
@@ -20,7 +20,7 @@ export default class getData {
    * @param lang the current user language abreviation e.g. "de" | "en"
    * @returns an object with the data of the current language
    */
-  getCurrentLanguage(lang: Lang) {
+  getCurrentLanguage(lang: Lang): Promise<Data> {
     const path = `${this.url}/${lang}.json`;
     return this.fetchData(path);
   }
@@ -30,7 +30,7 @@ export default class getData {
    * @param lang the target user language abreviation e.g. "de" | "en"
    * @returns an object with the data of the target language
    */
-  getTargetLanguage(lang: Lang) {
+  getTargetLanguage(lang: Lang): Promise<Data> {
     const path = `${this.url}/${lang}.json`;
     return this.fetchData(path);
   }
