@@ -37,4 +37,26 @@ interface Card extends React.PropsWithChildren {
   match: boolean;
   isSelected: boolean;
   id: string;
+  isActive?: number | undefined;
+}
+
+/**
+ * @param current the current word values
+ * @param target the target word values
+ * @param match true if the words are a match, false otherwise
+ * @param score the score of the game
+ * @param data the data of the game showed in the ux
+ * @param allData all data of the game to be used in the game
+ * @param lastData the last data to be used before end the game
+ * @param leng the index used to retrieve words from {@link allData} and replace them in {@link data}
+ */
+export interface InitialMatchState {
+  current: Word;
+  target: Word;
+  match: boolean;
+  score: number;
+  data: Word[][];
+  allData: Word[][];
+  lastData: { [key: string]: number };
+  leng: number;
 }
