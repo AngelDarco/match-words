@@ -1,30 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Word } from "../../types";
 import HandlerData from "../../lib/HandlerData";
-
-export interface MatchsState {
-  current: Word;
-  target: Word;
-  match: boolean;
-  score: number;
-  data: Word[][];
-  allData: Word[][];
-  leng: number;
-}
-
-const initialState: MatchsState = {
-  current: { word: "", id: 0 },
-  target: { word: "", id: 0 },
-  match: false,
-  score: 0,
-  data: [],
-  allData: [],
-  leng: 3,
-};
+import { InitialState } from "../InitialState";
+import type { InitialMatchState } from "../../types";
 
 export const matchsSlice = createSlice({
   name: "matchWords",
-  initialState,
+  initialState: InitialState,
   reducers: {
     current: (state, action) => {
       state.current = action.payload;
@@ -71,13 +52,27 @@ export const matchsSlice = createSlice({
       if (data.length === 0 || allData.length === 0) return state;
 
       if (allData[0].length > leng) state.leng++;
-      else return state;
+      else {
+        state.lastData[current.id] = (state.lastData[current.id] || 0) + 1;
+        state.lastData["length"] = (state.lastData["length"] || 0) + 1;
+        return state;
+      }
 
       const curr = HandlerData.replace(data[0], current.id, allData[0][leng]);
 
       const targ = HandlerData.replace(data[1], target.id, allData[1][leng]);
 
       state.data = [curr, targ];
+      return state;
+    },
+
+    lastData: (state, action) => {
+      type LastData = InitialMatchState["lastData"];
+
+      const { id } = action.payload;
+      const data: LastData = {};
+      data[id] = (data[id] || 0) + 1;
+      state.lastData = data;
       return state;
     },
   },
