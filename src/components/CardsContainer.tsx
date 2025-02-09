@@ -11,7 +11,7 @@ import {
 } from "../redux/slices/matchs";
 import { useEffect, useRef } from "react";
 import Card from "./Card";
-import getData from "../lib/getData";
+import FetchData from "../lib/FetchData";
 import { Data } from "../types";
 import Debounce from "../lib/Debounce";
 
@@ -26,7 +26,7 @@ export default function CardsContainer() {
     if (state.data.length === 0)
       (async () => {
         const URL = "database";
-        const db = new getData(URL);
+        const db = new FetchData(URL);
 
         await db.getCurrentLanguage("en").then((curr) => {
           if (dataRef.current) {
@@ -62,12 +62,15 @@ export default function CardsContainer() {
       dispatch(match(isMatch));
 
       // Increment the score and update the data
+      const updateDataWithDelay = new Debounce();
       if (isMatch) {
         dispatch(score());
-        dispatch(
-          updateData({
-            ...state,
-          })
+        updateDataWithDelay.execute(() =>
+          dispatch(
+            updateData({
+              ...state,
+            })
+          )
         );
       }
 
