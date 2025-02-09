@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Word } from "../../types";
+import HandlerData from "../../lib/HandlerData";
 
 export interface MatchsState {
   current: Word;
@@ -7,6 +8,8 @@ export interface MatchsState {
   match: boolean;
   score: number;
   data: Word[][];
+  allData: Word[][];
+  leng: number;
 }
 
 const initialState: MatchsState = {
@@ -15,6 +18,8 @@ const initialState: MatchsState = {
   match: false,
   score: 0,
   data: [],
+  allData: [],
+  leng: 3,
 };
 
 export const matchsSlice = createSlice({
@@ -25,10 +30,12 @@ export const matchsSlice = createSlice({
       state.current = action.payload;
       return state;
     },
+
     target: (state, action) => {
       state.target = action.payload;
       return state;
     },
+
     match: (state, action) => {
       state.match = action.payload;
       return state;
@@ -40,24 +47,37 @@ export const matchsSlice = createSlice({
     },
 
     data: (state, action) => {
-      state.data = action.payload;
+      state.allData = action.payload;
+      if (state.allData.length === 0) return state;
+
+      const LENG = state.leng;
+
+      // cut the data to LENG size
+      const curr = HandlerData.cut(state.allData[0], LENG);
+      const targ = HandlerData.cut(state.allData[1], LENG);
+
+      // randomize the data
+      const currRand = HandlerData.random(curr);
+      const targRand = HandlerData.random(targ);
+
+      state.data = [currRand, targRand];
+
       return state;
     },
 
     updateData: (state, action) => {
-      const currId = action.payload.current.id;
-      const targId = action.payload.target.id;
+      const { data, current, allData, leng, target } = action.payload;
 
-      if (state.data.length === 0) return state;
+      if (data.length === 0 || allData.length === 0) return state;
 
-      const currData = action.payload.data[0].filter(
-        (word: { id: number }) => word.id !== currId
-      );
-      const targData = action.payload.data[1].filter(
-        (word: { id: number }) => word.id !== targId
-      );
+      if (allData[0].length > leng) state.leng++;
+      else return state;
 
-      state.data = [currData, targData];
+      const curr = HandlerData.replace(data[0], current.id, allData[0][leng]);
+
+      const targ = HandlerData.replace(data[1], target.id, allData[1][leng]);
+
+      state.data = [curr, targ];
       return state;
     },
   },
