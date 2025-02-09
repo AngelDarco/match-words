@@ -3,7 +3,7 @@ import { Data, Lang } from "../types";
  * This class is used to get the data from the database
  *@param url - the main url of the database
  */
-export default class getData {
+export default class FetchData {
   private url: string;
 
   constructor(url: string) {
