@@ -90,6 +90,7 @@ export default function CardsContainer() {
     const containerId = targetElement.parentElement?.id;
 
     if (!id || !containerId) return;
+    if (state.lastData[id]) return (targetElement.style.pointerEvents = "none");
 
     const currentContainer = dataRef.current[0]?.lang === containerId;
     const targetContainer = dataRef.current[1]?.lang === containerId;
@@ -118,39 +119,58 @@ export default function CardsContainer() {
   const currentWords = state.data[0] || [];
   const targetWords = state.data[1] || [];
 
-  return (
-    <div className="max-w-lg border h-[500px] flex items-center justify-center">
-      <section
-        className="w-full h-full flex flex-col items-center justify-center gap-2 "
-        id={dataRef.current[0]?.lang}
-        onClick={HandlerMatchs}
-      >
-        {currentWords.map(({ id, word }) => (
-          <Card
-            key={id}
-            id={id + ""}
-            word={word}
-            isSelected={state.current.word === word}
-            match={state.current.word === word && state.match}
-          />
-        ))}
-      </section>
+  const gameOver =
+    currentWords.length > 0 && state.lastData["length"] >= currentWords.length;
 
-      <section
-        className="w-full h-full flex flex-col items-center justify-center gap-2 "
-        onClick={HandlerMatchs}
-        id={dataRef.current[1]?.lang}
-      >
-        {targetWords.map(({ id, word }) => (
-          <Card
-            key={id}
-            id={id + ""}
-            word={word}
-            isSelected={state.target.word === word}
-            match={state.target.word === word && state.match}
-          />
-        ))}
-      </section>
-    </div>
+  return (
+    <>
+      {gameOver ? (
+        <h1 className="text-3xl font-bold text-center">
+          Game Over: {state.score}
+        </h1>
+      ) : (
+        <div className="max-w-lg border h-[500px] flex items-center justify-center">
+          <section
+            className="w-full h-full flex flex-col items-center justify-center gap-2 "
+            id={dataRef.current[0]?.lang}
+            onClick={HandlerMatchs}
+          >
+            {currentWords.map(({ id, word }) => {
+              const { word: currentWord } = state.current;
+              return (
+                <Card
+                  key={id}
+                  id={id + ""}
+                  word={word}
+                  isSelected={currentWord === word}
+                  match={currentWord === word && state.match}
+                  isActive={state.lastData[id]}
+                />
+              );
+            })}
+          </section>
+
+          <section
+            className="w-full h-full flex flex-col items-center justify-center gap-2 "
+            onClick={HandlerMatchs}
+            id={dataRef.current[1]?.lang}
+          >
+            {targetWords.map(({ id, word }) => {
+              const { word: targetWord } = state.target;
+              return (
+                <Card
+                  key={id}
+                  id={id + ""}
+                  word={word}
+                  isSelected={targetWord === word}
+                  match={targetWord === word && state.match}
+                  isActive={state.lastData[id]}
+                />
+              );
+            })}
+          </section>
+        </div>
+      )}
+    </>
   );
 }
